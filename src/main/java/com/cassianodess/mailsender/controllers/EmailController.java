@@ -1,6 +1,7 @@
 package com.cassianodess.mailsender.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,11 +26,11 @@ public class EmailController {
         try {
             Boolean emailSent = service.sendEmail(email);
             if(!emailSent) {
-                throw new RuntimeException("fail while sent email");
+                throw new RuntimeException("Fail while sent email.");
             }
-            return ResponseEntity.ok(new EmailResponse(200, "Email has been sent successfully."));
+            return ResponseEntity.ok(new EmailResponse(HttpStatus.OK.value(), "Email has been sent successfully."));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new EmailResponse(400, "fail while sent email"));
+            return ResponseEntity.badRequest().body(new EmailResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
     
