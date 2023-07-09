@@ -7,7 +7,13 @@
 ### Send Email
 ### * URL: `/api/send-email`
 ### * Method: `Post`
+### * Basic Authorization:
+```
+username: user
+password: ***
+```
 ### * Body:
+
 
 ```
 {
