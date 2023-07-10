@@ -35,3 +35,5 @@ build/
 
 application.yml
 Dockerfile
+docker-compose.yml
+fly.toml
