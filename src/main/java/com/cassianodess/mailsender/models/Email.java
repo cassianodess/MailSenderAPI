@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Email {
 
+    @jakarta.validation.constraints.Email(message = "email must be valid")
     @NotBlank(message = "email is mandatory")
     @NotEmpty(message = "email must be not empty")
     private String emailTo;

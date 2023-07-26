@@ -12,6 +12,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.headers.Header;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.media.StringSchema;
+import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.security.SecurityScheme.Type;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
@@ -27,13 +38,13 @@ public class AuthConfiguration {
     private RequestHeaderAuthenticationProvider authenticationEntryPoint;
 
     @Bean
-    public static PasswordEncoder passwordEncoder(){
+    static PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
         .csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -61,5 +72,21 @@ public class AuthConfiguration {
           .withUser(this.SECRET_USERNAME)
           .password(passwordEncoder().encode(this.SECRET_PASSWORD))
           .authorities("ROLE_USER");
+    }
+
+    @Bean
+    OpenAPI springShopOpenAPI() {
+        return new OpenAPI()
+            .components(
+                new Components()
+                .addSecuritySchemes("basicScheme", new SecurityScheme().type(Type.HTTP).scheme("basic"))
+            )
+            .info(
+                new Info()
+                .title("Email Sender API")
+                .description("Spring boot application to send email.")
+                .version("v1.0.0")
+                .license(new License().name("Apache 2.0").url("http://springdoc.org"))
+            );
     }
 }

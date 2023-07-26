@@ -27,27 +27,36 @@ class MailSenderApplicationTests {
 	private String PASSWORD;
 
 	@Test
-	void sendEmailSuccess() {
+	void testSendEmailSuccess() {
 		Email email = new Email("email@email.com", "subject", "message");
 		EmailResponse response = this.restTemplate.withBasicAuth(this.USERNAME, this.PASSWORD).postForObject("/api/send-email", email, EmailResponse.class);
 
 		assertNotNull(response);
-		assertEquals(response.getStatus(), HttpStatus.OK.value());
+		assertEquals(HttpStatus.OK.value(), response.getStatus());
 	}
 
 	@Test
-	void sendEmailWithMandatoryFieldBlanck() {
+	void testSendEmailWithMandatoryFieldBlanck() {
 		Email email = new Email("", "subject", "message");
 		EmailResponse response = this.restTemplate.withBasicAuth(this.USERNAME, this.PASSWORD).postForObject("/api/send-email", email, EmailResponse.class);
 
-
 		assertNotNull(response);
-		assertEquals(response.getStatus(), HttpStatus.BAD_REQUEST.value());
+		assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
 		
 	}
 
 	@Test
-	void sendEmailWithoutBasicAuth() {
+	void testSendEmailWithInvalidEmailBody() {
+		Email email = new Email("email.com", "subject", "message");
+		EmailResponse response = this.restTemplate.withBasicAuth(this.USERNAME, this.PASSWORD).postForObject("/api/send-email", email, EmailResponse.class);
+
+		assertNotNull(response);
+		assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+		
+	}
+
+	@Test
+	void testSendEmailWithoutBasicAuth() {
 		Email email = new Email("email@email.com", "subject", "message");
 		ResponseEntity<EmailResponse> response = this.restTemplate.postForEntity("/api/send-email", email, EmailResponse.class);
 
