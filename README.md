@@ -19,7 +19,7 @@ Mail Sender API
 
 ### [API Link](https://cassianodess-mailsender.fly.dev/)
 
-### [API Documentation](https://cassianodess-mailsender.fly.dev/swagger-ui.html)
+### [API Documentation](https://cassianodess-mailsender.fly.dev/swagger-ui/index.html)
 
 ## Specifications
 
